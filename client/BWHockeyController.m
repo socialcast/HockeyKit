@@ -369,7 +369,13 @@
         
         SBJSON *jsonParser = [[[SBJSON alloc] init] autorelease];
         
-        NSDictionary *feed = (NSDictionary *)[jsonParser objectWithString:responseString error:NULL];
+        NSDictionary *feed = nil;
+        @try {
+            feed = (NSDictionary *)[jsonParser objectWithString:responseString error:NULL];
+        }
+        @catch (NSException *exception) {
+            feed = nil;
+        }
 
 		[[NSUserDefaults standardUserDefaults] setObject:[[[NSDate date] description] substringToIndex:10] forKey:kDateOfLastHockeyCheck];
 		[[NSUserDefaults standardUserDefaults] synchronize];
